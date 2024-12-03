@@ -32,4 +32,18 @@ router.get("/", async (req, res) => {
   else res.send(results).status(200);
 });
 
+router.get("/:id", async (req, res) => {
+  //in the connection remember that we have already accesed the sample training db
+  //now we are going to access the grades collection in that database
+  let collection = await db.collection("grades");
+
+  //define the query
+  //In this query we are going to search for a specific id
+  let query = { _id: new ObjectId(req.params.id) };
+  console.log(query);
+  let result = await collection.findOne(query);
+
+  if (!result) res.send("Not Found").status(404);
+  else res.send(result).status(200);
+});
 export default router;
